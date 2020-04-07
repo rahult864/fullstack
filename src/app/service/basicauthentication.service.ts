@@ -8,12 +8,20 @@ export class BasicauthenticationService {
 
   constructor(private http:HttpClient) { }
 
-  authenticat(username: string, password: string) {
-    if (username === 'in28minutes' && password === 'dummy') {
-      sessionStorage.setItem('authenticateUser',username)
-      return true
-    } else { return false }
-  }
+  // authenticat(username: string, password: string) {
+  //   if (username === 'in28minutes' && password === 'dummy') {
+  //     sessionStorage.setItem('authenticateUser',username)
+  //     return true
+  //   } else { return false }
+  // }
+
+  getAuthenticatedUser(){
+   return  sessionStorage.getItem('authenticateUser')
+    }
+    getAuthenticatedToken(){
+      if(this.getAuthenticatedUser())
+      return  sessionStorage.getItem('authenticateUser')
+       }
 
   isUserLoggedIn(){
     let user= sessionStorage.getItem('authenticateUser')
@@ -23,6 +31,7 @@ export class BasicauthenticationService {
 
     logOut(){
       sessionStorage.removeItem('authenticateUser')
+      sessionStorage.removeItem('token')
     }
 
     executeAuthenticationService(username: string, password: string){
@@ -36,6 +45,7 @@ export class BasicauthenticationService {
         map(
           data=>{
             sessionStorage.setItem('authenticateUser',username)
+            sessionStorage.setItem('token',basicAuthHeaderString)
             return data;
           }
         )
